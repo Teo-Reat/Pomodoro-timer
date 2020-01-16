@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="root">
+    <div class="lineProgress"></div>
+    <div class="separatelyProgress">
+        <div v-for="part in parts" class="onePart">
+            <div class="workProgress">
+                <div class="progress"></div>
+            </div>
+            <div class="restProgress">
+                <div class="progress"></div>
+            </div>
+        </div>
+        <button @click="getTime">Test</button>
+        <button @click="stopTimer">Stop</button>
+        <hr>
+        <div>{{ rest }}</div>
+        <div>{{ timer }}</div>
+        <div>{{ dateMs }}</div>
+    </div>
+</div>
+<script src="vue.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

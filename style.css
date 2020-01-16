@@ -1,0 +1,21 @@
+#root {
+    width: 600px;
+    margin: 0 auto;
+}
+
+.onePart {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.workProgress,
+.restProgress {
+    height: 30px;
+    background: lightgray;
+    width: 75%;
+}
+
+.restProgress {
+    width: 25%;
+    background: lightblue;
+}
