@@ -1,27 +1,43 @@
 new Vue({
     el: '#root',
     data: {
-        timeNow: [],
-        dateMs: 0,
-        parts: 8,
-        work: 25,
-        rest: 5,
+        blocks: 4,
+        dateNow: 0,
+        dateEnd: 0,
+        workTime: 0,
+        progress: [0, 0, 0, 0],
         timer: '',
+        times: [
+            {'': ''}
+        ],
     },
     methods: {
         getTime() {
-            let date = new Date();
-            this.dateMs = Date.now();
-            this.timeNow.push(date.getHours());
-            this.timeNow.push(date.getMinutes());
-            this.timeNow.push(date.getSeconds());
+            this.dateNow = Date.now();
+            this.dateEnd = this.dateNow + this.minutesToMs(0.1);
+            this.workTime = this.dateEnd - this.dateNow;
         },
-        test() {
-            let audio = new Audio('sound.wav');
+        fillWorkBar(index) {
+            this.dateNow = Date.now();
+            if(this.progress[index] < 100) {
+                this.progress[index] = 100 - (100 / this.workTime * (this.dateEnd - this.dateNow));
+                if (this.progress[index] > 100) {
+                    this.progress[index] = 100;
+                }
+            } else {
+                this.stopTimer();
+                this.playSound();
+            }
+        },
+        fillBar() {
+
+        },
+        playSound() {
+            let audio = new Audio('sound.mp3');
             audio.play();
         },
-        refresh() {
-            this.timer = setInterval(() => this.increaseNum(), 1000);
+        refresh(index) {
+            this.timer = setInterval(() => this.fillWorkBar(index), 1000);
         },
         increaseNum() {
             this.rest++;
@@ -32,7 +48,7 @@ new Vue({
         stopTimer() {
             clearInterval(this.timer);
         },
-        MinutesToMs(minutes) {
+        minutesToMs(minutes) {
             return minutes * 60000;
         }
     },

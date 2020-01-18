@@ -19,3 +19,9 @@
     width: 25%;
     background: lightblue;
 }
+
+.progress {
+    background: red;
+    width: 0;
+    height: 100%;
+}

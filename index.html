@@ -9,20 +9,21 @@
 <div id="root">
     <div class="lineProgress"></div>
     <div class="separatelyProgress">
-        <div v-for="part in parts" class="onePart">
+        <div class="onePart" v-for="(block, key) in blocks" @click="refresh(key)">
             <div class="workProgress">
-                <div class="progress"></div>
+                <div class="progress" :style="{width: progress[key] + '%'}">{{ block }}, {{ key }}</div>
             </div>
             <div class="restProgress">
                 <div class="progress"></div>
             </div>
         </div>
-        <button @click="getTime">Test</button>
-        <button @click="stopTimer">Stop</button>
+        <button @click="refresh(0)">Test</button>
+        <button @click="getTime">Test2</button>
         <hr>
-        <div>{{ rest }}</div>
-        <div>{{ timer }}</div>
-        <div>{{ dateMs }}</div>
+        <div>{{ dateNow }}</div>
+        <div>{{ dateEnd }}</div>
+        <div>{{ workTime }}</div>
+        <div>{{ progress }}</div>
     </div>
 </div>
 <script src="vue.js"></script>
