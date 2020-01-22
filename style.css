@@ -1,6 +1,7 @@
-#root {
+#app {
     width: 600px;
     margin: 0 auto;
+    font-size: 22px;
 }
 
 .onePart {
@@ -20,8 +21,26 @@
     background: lightblue;
 }
 
-.progress {
+.workProgress > .progress {
     background: red;
     width: 0;
     height: 100%;
+}
+
+.restProgress > .progress {
+    background: blue;
+    width: 0;
+    height: 100%;
+}
+
+.redPart {
+    height: 30px;
+    background: red;
+    width: 75%;
+}
+
+.bluePart {
+    height: 30px;
+    background: blue;
+    width: 25%;
 }

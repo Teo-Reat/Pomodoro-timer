@@ -6,25 +6,9 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="root">
-    <div class="lineProgress"></div>
-    <div class="separatelyProgress">
-        <div class="onePart" v-for="(block, key) in blocks" @click="refresh(key)">
-            <div class="workProgress">
-                <div class="progress" :style="{width: progress[key] + '%'}">{{ block }}, {{ key }}</div>
-            </div>
-            <div class="restProgress">
-                <div class="progress"></div>
-            </div>
-        </div>
-        <button @click="refresh(0)">Test</button>
-        <button @click="getTime">Test2</button>
-        <hr>
-        <div>{{ dateNow }}</div>
-        <div>{{ dateEnd }}</div>
-        <div>{{ workTime }}</div>
-        <div>{{ progress }}</div>
-    </div>
+<div id="app">
+    <teo-elem v-for="(onePart, key) in progressFull" :key="key"></teo-elem>
+    <teo-bar></teo-bar>
 </div>
 <script src="vue.js"></script>
 <script src="script.js"></script>

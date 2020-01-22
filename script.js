@@ -1,58 +1,91 @@
-new Vue({
-    el: '#root',
-    data: {
-        blocks: 4,
-        dateNow: 0,
-        dateEnd: 0,
-        workTime: 0,
-        progress: [0, 0, 0, 0],
-        timer: '',
-        times: [
-            {'': ''}
-        ],
+let bar = {
+    props: ['progressFull'],
+    data: function () {
+        return {
+            periodWork: 0.1,
+            periodRest: 0.05,
+            progressWork: 0,
+            progressRest: 0,
+            timer: '',
+        }
     },
+    template: `
+        <div>
+            <div class="onePart">
+                <div class="workProgress">
+                    <div class="progress" :style="{width: progressWork + '%'}"></div>
+                </div>
+                <div class="restProgress">
+                    <div class="progress" :style="{width: progressRest + '%'}"></div>
+                </div>
+            </div>
+            <input type="number" v-model="periodWork" placeholder="Work time, minutes">
+            <input type="number" v-model="periodRest" placeholder="Rest time, minutes">
+            <button @click="setTime(periodWork, periodRest)">Start</button>
+        </div>
+    `,
     methods: {
-        getTime() {
-            this.dateNow = Date.now();
-            this.dateEnd = this.dateNow + this.minutesToMs(0.1);
-            this.workTime = this.dateEnd - this.dateNow;
+        setTime(workPeriod, restPeriod) {
+            let workStart = Date.now();
+            let workTime = this.minutesToMilliseconds(workPeriod);
+            let endWorkTime = workStart + workTime;
+            let restTime = this.minutesToMilliseconds(restPeriod);
+            let endPeriodTime = endWorkTime + restTime;
+            this.refresh(workTime, endWorkTime, restTime, endPeriodTime);
         },
-        fillWorkBar(index) {
-            this.dateNow = Date.now();
-            if(this.progress[index] < 100) {
-                this.progress[index] = 100 - (100 / this.workTime * (this.dateEnd - this.dateNow));
-                if (this.progress[index] > 100) {
-                    this.progress[index] = 100;
+        refresh(workTime, endWorkTime, restTime, endPeriodTime) {
+            this.timer = setInterval(() => this.fillWorkBar(workTime, endWorkTime, restTime, endPeriodTime), 1000);
+        },
+        fillWorkBar(workTime, endWorkTime, restTime, endPeriodTime) {
+            let dateNow = Date.now();
+            if (this.progressWork < 100) {
+                this.progressWork = 100 - (100 / workTime * (endWorkTime - dateNow));
+                if (this.progressWork >= 100) {
+                    this.progressWork = 100;
+                    this.playSound();
                 }
             } else {
-                this.stopTimer();
-                this.playSound();
+                if (this.progressRest < 100) {
+                    this.progressRest = 100 - (100 / restTime * (endPeriodTime - dateNow));
+                    if (this.progressRest >= 100) this.progressRest = 100;
+                } else {
+                    this.stopTimer();
+                    this.playSound();
+                }
             }
-        },
-        fillBar() {
-
         },
         playSound() {
             let audio = new Audio('sound.mp3');
             audio.play();
         },
-        refresh(index) {
-            this.timer = setInterval(() => this.fillWorkBar(index), 1000);
-        },
-        increaseNum() {
-            this.rest++;
-            if(this.rest > 10) {
-                clearInterval(this.timer);
-            }
-        },
         stopTimer() {
             clearInterval(this.timer);
         },
-        minutesToMs(minutes) {
+        minutesToMilliseconds(minutes) {
             return minutes * 60000;
-        }
+        },
     },
-    computed: {
+};
+
+let elem = {
+    template: `
+    <div class="onePart">
+        <div class="redPart"></div>
+        <div class="bluePart"></div>
+    </div>
+    `
+};
+
+new Vue({
+    el: '#app',
+    data: {
+        progressFull: ['', '', '', ],
+    },
+    components: {
+        'teo-bar': bar,
+        'teo-elem': elem,
+    },
+    methods: {
 
     },
 });
