@@ -1,17 +1,17 @@
 let bar = {
-    props: ['progressFull'],
     data: function () {
         return {
-            periodWork: 0.1,
-            periodRest: 0.05,
+            periodWork: 25,
+            periodRest: 5,
             progressWork: 0,
             progressRest: 0,
             timer: '',
+            toggleView: true,
         }
     },
     template: `
         <div>
-            <div class="onePart">
+            <div class="onePart" v-show="!toggleView">
                 <div class="workProgress">
                     <div class="progress" :style="{width: progressWork + '%'}"></div>
                 </div>
@@ -19,9 +19,19 @@ let bar = {
                     <div class="progress" :style="{width: progressRest + '%'}"></div>
                 </div>
             </div>
-            <input type="number" v-model="periodWork" placeholder="Work time, minutes">
-            <input type="number" v-model="periodRest" placeholder="Rest time, minutes">
-            <button @click="setTime(periodWork, periodRest)">Start</button>
+            <div v-show="toggleView" class="onePart">
+                <label for="minutes">
+                    <span>Work time, minutes</span>
+                    <hr>
+                    <input type="number" v-model="periodWork" id="minutes">
+                </label>
+                <button @click="setTime(periodWork, periodRest), toggleView = !toggleView">Start</button>
+                <label for="seconds">
+                    <span>Rest time, minutes</span>
+                    <hr>
+                    <input type="number" v-model="periodRest" id="seconds">
+                </label>
+            </div>
         </div>
     `,
     methods: {
@@ -42,7 +52,7 @@ let bar = {
                 this.progressWork = 100 - (100 / workTime * (endWorkTime - dateNow));
                 if (this.progressWork >= 100) {
                     this.progressWork = 100;
-                    this.playSound();
+                    this.playSoundEndWork();
                 }
             } else {
                 if (this.progressRest < 100) {
@@ -50,12 +60,20 @@ let bar = {
                     if (this.progressRest >= 100) this.progressRest = 100;
                 } else {
                     this.stopTimer();
-                    this.playSound();
+                    this.playSoundEndRest();
+                    this.addBar();
+                    this.progressWork = 0;
+                    this.progressRest = 0;
+                    this.setTime(this.periodWork, this.periodRest);
                 }
             }
         },
-        playSound() {
+        playSoundEndWork() {
             let audio = new Audio('sound.mp3');
+            audio.play();
+        },
+        playSoundEndRest() {
+            let audio = new Audio('sound2.wav');
             audio.play();
         },
         stopTimer() {
@@ -64,6 +82,9 @@ let bar = {
         minutesToMilliseconds(minutes) {
             return minutes * 60000;
         },
+        addBar() {
+            this.$emit('add-bar');
+        }
     },
 };
 
@@ -79,13 +100,15 @@ let elem = {
 new Vue({
     el: '#app',
     data: {
-        progressFull: ['', '', '', ],
+        progressFull: [],
     },
     components: {
         'teo-bar': bar,
         'teo-elem': elem,
     },
     methods: {
-
+        addFullBar() {
+            this.progressFull.push('');
+        }
     },
 });

@@ -1,23 +1,33 @@
+* {
+    box-sizing: border-box;
+}
+
+h1 {
+    text-align: center;
+}
+
 #app {
     width: 600px;
-    margin: 0 auto;
+    margin: 5% auto;
     font-size: 22px;
 }
 
 .onePart {
     display: flex;
+    justify-content: space-between;
     margin-bottom: 20px;
 }
 
 .workProgress,
 .restProgress {
-    height: 30px;
+    height: 50px;
     background: lightgray;
     width: 75%;
+    border: 4px inset cyan;
 }
 
 .restProgress {
-    width: 25%;
+    width: 24%;
     background: lightblue;
 }
 
@@ -34,13 +44,37 @@
 }
 
 .redPart {
-    height: 30px;
+    height: 50px;
     background: red;
     width: 75%;
+    border: 4px inset cyan;
 }
 
 .bluePart {
-    height: 30px;
+    height: 50px;
     background: blue;
-    width: 25%;
+    width: 24%;
+    border: 4px inset cyan;
+}
+
+input {
+    font-size: 16px;
+    width: 85px;
+    padding: 10px 20px;
+}
+
+#minutes {
+    display: block;
+    margin-left: auto;
+}
+
+button {
+    padding: 20px;
+    border: 5px inset cyan;
+    border-radius: 50%;
+    height: 140px;
+    width: 140px;
+    background: lightblue;
+    color: white;
+    font-size: 26px;
 }

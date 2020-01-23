@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Pomodoro</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div id="app">
+    <h1>Pomodoro Timer</h1>
     <teo-elem v-for="(onePart, key) in progressFull" :key="key"></teo-elem>
-    <teo-bar></teo-bar>
+    <teo-bar @add-bar="addFullBar"></teo-bar>
 </div>
 <script src="vue.js"></script>
 <script src="script.js"></script>
