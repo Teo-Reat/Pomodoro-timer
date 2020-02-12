@@ -4,6 +4,11 @@
 
 h1 {
     text-align: center;
+    color: red;
+}
+
+h1 > span {
+    color: blue;
 }
 
 #app {
@@ -23,11 +28,12 @@ h1 {
     height: 50px;
     background: lightgray;
     width: 75%;
-    border: 4px inset cyan;
+    border: 8px outset cyan;
+    position: relative;
 }
 
 .restProgress {
-    width: 24%;
+    width: 25%;
     background: lightblue;
 }
 
@@ -35,26 +41,47 @@ h1 {
     background: red;
     width: 0;
     height: 100%;
+    position: relative;
+    z-index: 4;
+}
+
+.timeCountdown,
+.restProgress::after {
+    display: block;
+    color: white;
+    font-weight: bold;
+    z-index: 5;
+    position: absolute;
+    margin: auto;
+    top: 50%; left: 50%;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+}
+
+.restProgress::after {
+    content: 'Rest';
 }
 
 .restProgress > .progress {
     background: blue;
     width: 0;
     height: 100%;
+    position: relative;
 }
 
 .redPart {
     height: 50px;
     background: red;
     width: 75%;
-    border: 4px inset cyan;
+    border: 8px inset cyan;
 }
 
 .bluePart {
     height: 50px;
     background: blue;
-    width: 24%;
-    border: 4px inset cyan;
+    width: 25%;
+    border: 8px inset cyan;
 }
 
 input {
@@ -70,7 +97,7 @@ input {
 
 button {
     padding: 20px;
-    border: 5px inset cyan;
+    border: 12px outset cyan;
     border-radius: 50%;
     height: 140px;
     width: 140px;

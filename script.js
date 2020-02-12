@@ -7,6 +7,9 @@ let bar = {
             progressRest: 0,
             timer: '',
             toggleView: true,
+            zeroBefore: 0,
+            timeSeconds: 0,
+            timeMinutes: 0,
         }
     },
     template: `
@@ -14,6 +17,7 @@ let bar = {
             <div class="onePart" v-show="!toggleView">
                 <div class="workProgress">
                     <div class="progress" :style="{width: progressWork + '%'}"></div>
+                    <div class="timeCountdown">Work time: {{ timeMinutes }}:{{ zeroBefore }}{{ timeSeconds }}</div>
                 </div>
                 <div class="restProgress">
                     <div class="progress" :style="{width: progressRest + '%'}"></div>
@@ -47,6 +51,7 @@ let bar = {
             this.timer = setInterval(() => this.fillWorkBar(workTime, endWorkTime, restTime, endPeriodTime), 1000);
         },
         fillWorkBar(workTime, endWorkTime, restTime, endPeriodTime) {
+            this.countdown();
             let dateNow = Date.now();
             if (this.progressWork < 100) {
                 this.progressWork = 100 - (100 / workTime * (endWorkTime - dateNow));
@@ -84,6 +89,17 @@ let bar = {
         },
         addBar() {
             this.$emit('add-bar');
+        },
+        countdown() {
+            this.timeSeconds += 1;
+            if (this.timeSeconds >= 20) {
+                this.timeSeconds = 0;
+                this.timeMinutes += 1;
+                if (this.timeMinutes >= this.periodWork) {
+                    this.timeMinutes = 0;
+                }
+            }
+            this.timeSeconds < 10 ? this.zeroBefore = 0 : this.zeroBefore = '';
         }
     },
 };
