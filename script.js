@@ -92,7 +92,7 @@ let bar = {
         },
         countdown() {
             this.timeSeconds += 1;
-            if (this.timeSeconds >= 20) {
+            if (this.timeSeconds >= 60) {
                 this.timeSeconds = 0;
                 this.timeMinutes += 1;
                 if (this.timeMinutes >= this.periodWork) {
